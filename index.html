@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark" data-layout="grid" data-density="cozy" data-show-kpis="true">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0b0d" />
+  <title>Itacar · Status dos Carregadores</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./styles.css" />
+
+  <script>
+    window.__TWEAK_DEFAULTS = {
+      "layout": "grid",
+      "density": "cozy",
+      "showKpis": true
+    };
+  </script>
+</head>
+<body>
+
+  <header class="topbar" role="banner">
+    <div class="topbar__brand">
+      <img class="topbar__logo" src="incharge.png" alt="INCHARGE" />
+      <span class="topbar__brandname">Itacar</span>
+      <span class="topbar__divider" aria-hidden="true"></span>
+      <span class="topbar__title">Status dos Carregadores</span>
+    </div>
+
+    <div class="topbar__live" id="live-pill" title="Atualiza a cada 30 segundos">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span class="live-text">AO VIVO</span>
+    </div>
+
+    <div class="topbar__meta">
+      <span class="topbar__updated" id="last-update">esperando dados…</span>
+      <button class="topbar__btn" id="theme-toggle" aria-label="Alternar tema claro/escuro" title="Alternar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <div id="banner" class="banner" style="display:none;" role="status"></div>
+
+    <section class="kpis" id="kpis" aria-label="Indicadores gerais"></section>
+
+    <header class="section-head">
+      <div class="section-head__title">Locais</div>
+      <div class="section-head__hint">Clique em um plug para abrir o pagamento</div>
+    </header>
+    <section class="locations" id="locations" aria-label="Locais de carregamento"></section>
+  </main>
+
+  <script src="./script.js" defer></script>
+  <script src="./tweaks.js" defer></script>
+</body>
+</html>
