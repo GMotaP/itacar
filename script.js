@@ -103,9 +103,11 @@
   }
 
   // ── Card de status (principal, por plugue) ────────────────
+  // Mesmo tamanho para todos os status. Mostra % + barra so quando carregando.
   function renderStatusCard(key, ch, detail) {
-    const status = getStatus(ch);
-    const label  = STATUS_LABEL[status] || status;
+    const status     = getStatus(ch);
+    const label      = STATUS_LABEL[status] || status;
+    const isCharging = status === "Charging";
 
     const card = el("a", {
       class: `status-card ${statusClass(ch)}`,
@@ -115,34 +117,21 @@
       title: `${key.toUpperCase()} · Plug ${ch.plug} — ${label}`,
     });
 
+    const raw = detail && Number.isFinite(detail.percent) ? detail.percent : null;
+    const pct = raw == null ? null : Math.max(0, Math.min(100, Math.round(raw)));
+
     card.append(
       el("div", { class: "status-card__top" },
-        el("span", { class: "status-card__name" }, `${key.toUpperCase()} · P${ch.plug}`),
-        el("span", { class: "status-card__dot" }),
+        el("span", { class: "status-card__title" },
+          el("span", { class: "status-card__dot" }),
+          el("span", { class: "status-card__title-text" }, `${key.toUpperCase()} P${ch.plug} · ${label}`),
+        ),
+        isCharging ? el("span", { class: "status-card__pct" }, pct != null ? `${pct}%` : "…") : null,
       ),
-      el("div", { class: "status-card__status" }, label),
+      el("div", { class: "status-card__bar" },
+        el("span", { class: "status-card__fill", style: `width:${isCharging && pct != null ? pct : 0}%` }),
+      ),
     );
-
-    // Bateria so quando estiver carregando
-    if (status === "Charging") {
-      const raw = detail && Number.isFinite(detail.percent) ? detail.percent : null;
-      const pct = raw == null ? null : Math.max(0, Math.min(100, Math.round(raw)));
-
-      const batt = el("div", { class: "status-card__batt" },
-        el("div", { class: "status-card__batt-row" },
-          el("span", { class: "status-card__batt-label" }, "Bateria"),
-          el("span", { class: "status-card__pct" }, pct != null ? `${pct}%` : "…"),
-        ),
-        el("div", { class: "status-card__bar" },
-          el("span", { class: "status-card__fill", style: `width:${pct != null ? pct : 0}%` }),
-        ),
-      );
-
-      if (detail && Number.isFinite(detail.minutesTo80Percent) && pct != null && pct < 80) {
-        batt.append(el("div", { class: "status-card__meta" }, `~${detail.minutesTo80Percent} min para 80%`));
-      }
-      card.append(batt);
-    }
 
     return card;
   }
@@ -150,9 +139,14 @@
   function renderLoadingCard(name) {
     return el("div", { class: "status-card is-loading" },
       el("div", { class: "status-card__top" },
-        el("span", { class: "status-card__name" }, name || "—"),
+        el("span", { class: "status-card__title" },
+          el("span", { class: "status-card__dot" }),
+          el("span", { class: "status-card__title-text" }, name || "—"),
+        ),
       ),
-      el("div", { class: "status-card__status" }, "…"),
+      el("div", { class: "status-card__bar" },
+        el("span", { class: "status-card__fill", style: "width:0%" }),
+      ),
     );
   }
 
